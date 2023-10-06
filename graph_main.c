@@ -8,7 +8,7 @@
 
 void dfs(Graph *graph);
 
-void generateDotFile(Graph* graph, const char* filename);
+void generateDotFile(Graph *graph, const char *filename);
 
 int main(int argc, char const *argv[])
 {
@@ -24,7 +24,6 @@ int main(int argc, char const *argv[])
 
     addEdge(graph, 'D', 'E');
     addEdge(graph, 'F', 'E');
-    
 
     // Print the graph
     printGraph(graph);
@@ -33,7 +32,7 @@ int main(int argc, char const *argv[])
     printf("Topological Sort\n");
     dfs(graph);
 
-    generateDotFile(graph,"graph.dot");
+    generateDotFile(graph, "graph.dot");
 
     system("dot -Tpng -Gdpi=300 -Gsize=5,5 graph.dot -o graph.png");
 
@@ -45,7 +44,7 @@ void dfsUtil(Graph *graph, int vertex, bool *visited, St *stack)
     visited[vertex] = true;
 
     Node *current = graph->adjList[vertex];
-    
+
     while (current != NULL)
     {
         int adjacentVertex = current->data - 'A';
@@ -90,9 +89,11 @@ void dfs(Graph *graph)
 }
 
 // Function to generate a DOT file from the graph
-void generateDotFile(Graph* graph, const char* filename) {
-    FILE* dotFile = fopen(filename, "w");
-    if (!dotFile) {
+void generateDotFile(Graph *graph, const char *filename)
+{
+    FILE *dotFile = fopen(filename, "w");
+    if (!dotFile)
+    {
         perror("Error opening DOT file");
         return;
     }
@@ -100,9 +101,11 @@ void generateDotFile(Graph* graph, const char* filename) {
     fprintf(dotFile, "digraph G {\n");
 
     // Write DOT statements to define the graph structure
-    for (int i = 0; i < graph->numVertices; i++) {
-        Node* current = graph->adjList[i];
-        while (current != NULL) {
+    for (int i = 0; i < graph->numVertices; i++)
+    {
+        Node *current = graph->adjList[i];
+        while (current != NULL)
+        {
             fprintf(dotFile, "  %c -> %c;\n", i + 'A', current->data);
             current = current->next;
         }
