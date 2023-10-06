@@ -5,30 +5,35 @@
 #include <string.h>
 #include <stdbool.h>
 
-typedef struct Node {
+typedef struct Node
+{
     char data;
-    struct Node* next;
+    struct Node *next;
 } Node;
 
 // Define a structure for the graph
-typedef struct Graph {
+typedef struct Graph
+{
     int numVertices;
-    Node** adjList;
+    Node **adjList;
 } Graph;
 
-Node* createNode(char data) {
-    Node* newNode = (Node*)malloc(sizeof(Node));
+Node *createNode(char data)
+{
+    Node *newNode = (Node *)malloc(sizeof(Node));
     newNode->data = data;
     newNode->next = NULL;
     return newNode;
 }
 
-Graph* createGraph(int numVertices) {
-    Graph* graph = (Graph*)malloc(sizeof(Graph));
+Graph *createGraph(int numVertices)
+{
+    Graph *graph = (Graph *)malloc(sizeof(Graph));
     graph->numVertices = numVertices;
-    graph->adjList = (Node**)malloc(numVertices * sizeof(Node*));
+    graph->adjList = (Node **)malloc(numVertices * sizeof(Node *));
 
-    for (int i = 0; i < numVertices; i++) {
+    for (int i = 0; i < numVertices; i++)
+    {
         graph->adjList[i] = NULL;
     }
 
@@ -36,27 +41,44 @@ Graph* createGraph(int numVertices) {
 }
 
 // Function to add an edge between two vertices
-void addEdge(Graph* graph, char src, char dest) {
+void addEdge(Graph *graph, char src, char dest)
+{
     int srcIndex = src - 'A';
     int destIndex = dest - 'A';
 
-    Node* newNode = createNode(dest);
-    newNode->next = graph->adjList[srcIndex];
-    graph->adjList[srcIndex] = newNode;
+    Node *newNode = createNode(dest);
+
+    if (graph->adjList[srcIndex] == NULL)
+    {
+        graph->adjList[srcIndex] = newNode;
+    }
+    else
+    {
+        Node *temp = graph->adjList[srcIndex];
+
+        while (temp->next != NULL)
+        {
+            temp = temp->next;
+        }
+
+        temp->next = newNode;
+    }
 }
 
 // Function to print the graph
-void printGraph(Graph* graph) {
-    for (int i = 0; i < graph->numVertices; i++) {
-        Node* current = graph->adjList[i];
+void printGraph(Graph *graph)
+{
+    for (int i = 0; i < graph->numVertices; i++)
+    {
+        Node *current = graph->adjList[i];
         printf("Vertex %c: ", i + 'A');
-        while (current != NULL) {
+        while (current != NULL)
+        {
             printf("%c -> ", current->data);
             current = current->next;
         }
         printf("NULL\n");
     }
 }
-
 
 #endif
