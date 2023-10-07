@@ -6,7 +6,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-
 void topologicalSortUtil(Graph *graph, int vertex, bool *visited, St *stack)
 {
     visited[vertex] = true;
@@ -56,5 +55,57 @@ void topologicalSort(Graph *graph)
     }
 }
 
-#endif
+bool isCyclicUtil(Graph *graph, int vertex, bool visited[], bool *recStack)
+{
+    visited[vertex] = true;
+    recStack[vertex] = true;
 
+    Node *current = graph->adjList[vertex];
+    while (current != NULL)
+    {
+        int adjacentVertex = current->data - 'A';
+        if (!visited[adjacentVertex])
+        {
+            if (isCyclicUtil(graph, adjacentVertex, visited, recStack))
+            {
+                return true;
+            }
+        }
+        else if (recStack[adjacentVertex])
+        {
+            return true;
+        }
+        current = current->next;
+    }
+
+    recStack[vertex] = false;
+    return false;
+}
+
+bool isCyclic(Graph *graph)
+{
+    int numVertices = graph->numVertices;
+    bool visited[MAX_VERTICES];
+    bool recStack[MAX_VERTICES];
+
+    for (int i = 0; i < numVertices; i++)
+    {
+        visited[i] = false;
+        recStack[i] = false;
+    }
+
+    for (int i = 0; i < numVertices; i++)
+    {
+        if (!visited[i])
+        {
+            if (isCyclicUtil(graph, i, visited, recStack))
+            {
+                return true;
+            }
+        }
+    }
+
+    return false;
+}
+
+#endif

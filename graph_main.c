@@ -28,9 +28,13 @@ int main(int argc, char const *argv[])
 
     printf("<======================> \n");
     printf("Topological Sort\n");
-    topologicalSort(graph);
 
-    generateDotFile(graph, "graph.dot");
+    if (!isCyclic(graph))
+        topologicalSort(graph);
+    else
+        printf("graph contain cycle");
+
+        generateDotFile(graph, "graph.dot");
 
     system("dot -Tpng -Gdpi=300 -Gsize=5,5 graph.dot -o graph.png");
 

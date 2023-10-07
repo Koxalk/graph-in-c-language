@@ -7,5 +7,5 @@
 #include "topological_impl.h"
 
 void topologicalSort(Graph *graph);
-
+bool isCyclic(Graph *graph);
 #endif
